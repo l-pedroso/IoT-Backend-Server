@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
-const path = require('path');
+
 
 // Setting up port
 let PORT = process.env.PORT || 3000;

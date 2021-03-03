@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "marciorasf.theme-darkula"
+        "marciorasf.theme-darkula",
+        "pkief.material-icon-theme"
     ]
 }
