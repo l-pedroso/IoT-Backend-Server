@@ -1,18 +1,17 @@
-require('dotenv').config();
+if(process.env.NODE_ENV == "development"){
+    require('dotenv').config();
+}
 
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
-
-
-// Setting up port
-let PORT = process.env.PORT || 3000;
+const jwtStrategyConfig = require('./middlewares/auth/jwt_configuration_middleware');
+const routesConfig = require('./routes/index_route');
 
 //=== 1 - CREATE APP
 // Creating express app and configuring middleware needed for authentication
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -35,13 +34,13 @@ mongoose.connection.on('error', err => {
 
 //=== 3 - INITIALIZE PASSPORT MIDDLEWARE
 app.use(passport.initialize());
-require("./middlewares/jwt")(passport);
+jwtStrategyConfig(passport);
 
 
 //=== 4 - CONFIGURE ROUTES
 //Configure Route
-require('./routes/index')(app);
+routesConfig(app);
 
 
 //=== 5 - START SERVER
-app.listen(PORT, () => console.log('Server running on http://localhost:'+PORT+'/'));
+app.listen(process.env.PORT || 3000, () => console.log('Server running on http://localhost:'+PORT+'/'));
