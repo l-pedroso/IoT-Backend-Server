@@ -2,6 +2,7 @@ if(process.env.NODE_ENV == "development"){
     require('dotenv').config();
 }
 
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -19,13 +20,12 @@ app.use(express.urlencoded({ extended: false }));
 //=== 2 - SET UP DATABASE
 //Configure mongoose's promise to global promise
 mongoose.promise = global.Promise;
-
-try{
-    await mongoose.connect(process.env.MONGO_CONN_URL, { useNewUrlParser: true , useCreateIndex: true});
+mongoose.connect(process.env.MONGO_CONN_URL, { useNewUrlParser: true , useCreateIndex: true}).then(() => {
     console.log('MongoDB --  database connection established successfully!');
-}catch(err){
+}).catch(err => {
     console.log('Connection to database error' + err);
-}
+});
+    
 
 mongoose.connection.on('error', err => {
     console.log("MongoDB connection error. Please make sure MongoDB is running. " + err);
@@ -43,4 +43,4 @@ routesConfig(app);
 
 
 //=== 5 - START SERVER
-app.listen(process.env.PORT || 3000, () => console.log('Server running on http://localhost:'+PORT+'/'));
+app.listen(process.env.PORT || 3000, () => console.log('Server running on http://localhost:'+process.env.PORT+'/'));
