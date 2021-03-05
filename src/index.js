@@ -7,8 +7,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
-const jwtStrategyConfig = require('./middlewares/auth/jwt_configuration_middleware');
-const routesConfig = require('./routes/index_route');
+const jwtStrategyConfig = require('./middlewares/auth/jwt_strategy_configuration');
+const routesConfig = require('./routes');
 
 //=== 1 - CREATE APP
 // Creating express app and configuring middleware needed for authentication
@@ -44,3 +44,21 @@ routesConfig(app);
 
 //=== 5 - START SERVER
 app.listen(process.env.PORT || 3000, () => console.log('Server running on http://localhost:'+process.env.PORT+'/'));
+
+const sgMail = require('@sendgrid/mail')
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+const msg = {
+  to: 'lipe_hg007@hotmail.com', // Change to your recipient
+  from: 'luis.pedroso.felipe@gmail.com', // Change to your verified sender
+  subject: 'Sending with SendGrid is Fun',
+  text: 'and easy to do anywhere, even with Node.js',
+  html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+}
+sgMail
+  .send(msg)
+  .then(() => {
+    console.log('Email sent')
+  })
+  .catch((error) => {
+    console.error(error)
+  })

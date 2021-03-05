@@ -1,7 +1,7 @@
 const express = require('express');
 const {check} = require('express-validator');
-const auth_controller = require('../controllers/auth_controller');
-const validator = require('../middlewares/validator_middleware');
+const auth = require('../controllers/auth');
+const validator = require('../middlewares/validator');
 
 const router = express.Router();
 
@@ -15,11 +15,11 @@ router.post('/register', [
     check('password').not().isEmpty().isLength({min: 6}).withMessage('Must be at least 6 chars long'),
     check('firstName').not().isEmpty().withMessage('You first name is required'),
     check('lastName').not().isEmpty().withMessage('You last name is required')
-], validator, auth_controller.register);
+], validator, auth.register);
 
 router.post("/login", [
     check('email').isEmail().withMessage('Enter a valid email address'),
     check('password').not().isEmpty(),
-], validator, auth_controller.login);
+], validator, auth.login);
 
 module.exports = router;
